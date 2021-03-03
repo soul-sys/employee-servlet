@@ -32,6 +32,10 @@
 	-- Records of t_company
 	-- ----------------------------
 	
+	INSERT INTO `t_company` VALUES (1, '腾讯', '腾讯是一个好公司', '2021-03-03 17:06:29');
+	INSERT INTO `t_company` VALUES (2, '小米', '小米也是一个好公司', '2021-03-03 17:07:01');
+	INSERT INTO `t_company` VALUES (3, '戴尔', '戴尔isgood', '2021-03-03 17:07:45');
+	
 	-- ----------------------------
 	-- Table structure for t_employ
 	-- ----------------------------
@@ -60,6 +64,9 @@
 	-- ----------------------------
 	-- Records of t_employ
 	-- ----------------------------
-	INSERT INTO `t_employ` VALUES (1, '111', NULL, NULL, '123', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '123');
+	INSERT INTO `t_employ` VALUES (1, '111', NULL, NULL, '123', NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, '123');
+	INSERT INTO `t_employ` VALUES (2, '333', NULL, NULL, '333', NULL, NULL, NULL, NULL, NULL, 2, NULL, NULL, NULL, NULL, NULL, '333');
+	INSERT INTO `t_employ` VALUES (3, NULL, NULL, NULL, '444', NULL, NULL, NULL, NULL, NULL, 3, NULL, NULL, NULL, NULL, NULL, '444');
+	INSERT INTO `t_employ` VALUES (4, NULL, NULL, NULL, '222', NULL, NULL, NULL, NULL, NULL, 2, NULL, NULL, NULL, NULL, NULL, '222');
 
 
