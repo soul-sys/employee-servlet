@@ -63,7 +63,7 @@ public class EmployServiceImpl implements EmployService {
 		sBuffer.append("	e.sex, ");
 		sBuffer.append("	o.orgName ");
 		sBuffer.append("FROM t_employ e ");
-		sBuffer.append("LEFT JOIN t_org o ON o.id = e.orgId");
+		sBuffer.append("LEFT JOIN t_org o ON o.id = e.orgId ");
 		sBuffer.append("WHERE e.id != (SELECT id FROM t_employ e1 WHERE e1.phoneNum = ?) ");
 		sBuffer.append("AND e.companyId = (SELECT companyId FROM t_employ e2 WHERE e2.phoneNum = ?) ");
 		if(StringUtil.isNotEmpty(name)) {
