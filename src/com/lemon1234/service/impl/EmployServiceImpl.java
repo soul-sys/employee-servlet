@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -137,4 +139,28 @@ public class EmployServiceImpl implements EmployService {
 		return count;
 	}
 
+	@Override
+	public Map<Integer, Integer> sexEcharts(Integer companyId) throws Exception {
+		Connection conn = DBUtil.getConnection();
+		
+		StringBuffer sBuffer = new StringBuffer();
+		sBuffer.append("SELECT ");
+		sBuffer.append("	COUNT(1) AS count,");
+		sBuffer.append("	sex ");
+		sBuffer.append("FROM t_employ e ");
+		sBuffer.append("WHERE e.companyId = ? ");
+		sBuffer.append("GROUP BY sex ");
+		
+		PreparedStatement pstmt = conn.prepareStatement(sBuffer.toString());
+		pstmt.setInt(1, companyId);
+		
+		Map<Integer, Integer> result = new HashMap<Integer, Integer>();
+		
+		ResultSet rs = pstmt.executeQuery();
+		while(rs.next()) {
+			result.put(rs.getInt("sex"), rs.getInt("count"));
+		}
+		
+		return result;
+	}
 }

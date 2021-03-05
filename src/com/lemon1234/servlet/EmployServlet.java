@@ -2,12 +2,14 @@ package com.lemon1234.servlet;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.lemon1234.entity.Employ;
@@ -51,7 +53,36 @@ public class EmployServlet extends HttpServlet {
 					e.printStackTrace();
 				}
 			}
+			if(type.equals("sexEcharts")) {
+				try {
+					this.sexEcharts(request, response);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
 		}
+	}
+	
+	private void sexEcharts(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		String companyId = request.getParameter("companyId");
+		JsonObject jsonObject = new JsonObject();
+		if(StringUtil.isEmpty(companyId)) {
+			jsonObject.addProperty("code", 500);
+			jsonObject.addProperty("msg", "无效请求");
+		} else {
+			Map<Integer, Integer> result = service.sexEcharts(Integer.parseInt(companyId));
+			// 未知
+			Integer x = result.get(0) == null ? 0 : result.get(0);
+			// woman
+			Integer w = result.get(2) == null ? 0 : result.get(2);
+			// man
+			Integer m = result.get(1) == null ? 0 : result.get(1);
+			
+			jsonObject.addProperty("code", 200);
+			jsonObject.addProperty("sex", new Gson().toJson(new Integer[] {1, 2, 0}));
+			jsonObject.addProperty("count", new Gson().toJson(new Integer[] {m, w, x}));
+		}
+		PrintUtil.write(jsonObject.toString(), response);
 	}
 
 	private void delete(HttpServletRequest request, HttpServletResponse response) throws Exception {

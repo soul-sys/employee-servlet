@@ -1,5 +1,7 @@
 package com.lemon1234.service;
 
+import java.util.Map;
+
 import com.google.gson.JsonArray;
 import com.lemon1234.entity.Employ;
 
@@ -12,4 +14,6 @@ public interface EmployService {
 	int delete(String id) throws Exception;
 	
 	int add(Employ employ) throws Exception;
+	
+	Map<Integer, Integer> sexEcharts(Integer companyId) throws Exception;
 }

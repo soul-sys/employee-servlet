@@ -6,46 +6,53 @@
 	
 	<body>
 		<canvas id="myChart" width="400" height="400"></canvas>
-		员工人数
+		企业男女比例
 	</body>
 	<script src="/static/js/jquery-1.11.2.min.js"></script>
-	<script src="/static/js/Chart.js"></script>
+	<script src="/static/js/echarts.min.js"></script>
 	<script type="text/javascript">
-		var ctx1 = document.getElementById("myChart").getContext("2d");
+		var ctx1 = echarts.init(document.getElementById('myChart'));
 		
 		$(function(){
-			$.post("/admin/wx/proportion",{},function(result){
-				  if(result.success){
-					  var sex = result.sex;
-					  var sexChar = [];
-					  for(var i = 0; i < sex.length; i++) {
-						  // 性别 0：未知、1：男、2：女
-						  if(sex[i] == 0) {
-							  sexChar.push("未知")
-						  }
-						  if(sex[i] == 1) {
-							  sexChar.push("男")
-						  }
-						  if(sex[i] == 2) {
-							  sexChar.push("女")
-						  }
-					  }
-					  var count = result.count;
-					  
-					  var data = {
-					            labels: sexChar,
-					            datasets: [
-					            {
-					            label: "My First dataset",
-					            fillColor: "rgba(220,220,220,0.5)",
-					            strokeColor: "rgba(220,220,220,0.8)",
-					            highlightFill: "rgba(220,220,220,0.75)",
-					            highlightStroke: "rgba(220,220,220,1)",
-					            data: count
-					            }
-					            ]
-					            };
-					  var myBarChart = new Chart(ctx1).Bar(data, function(){});
+			var info = sessionStorage.getItem("info");
+			
+			$.get("/employ?type=sexEcharts&companyId=" + JSON.parse(info).companyId,{},function(result){
+				if(result.code === 200) {
+					var sex = result.sex;
+										  
+					var sexChar = [];
+					for(var i = 0; i < sex.length; i++) {
+						// 性别 0：未知、1：男、2：女
+					 	if(sex[i] == 0) {
+					  		sexChar.push("未知")
+					 	}
+					 	if(sex[i] == 1) {
+					  		sexChar.push("男")
+					 	}
+					 	if(sex[i] == 2) {
+					  		sexChar.push("女")
+					 	}
+					}
+					
+			        // 指定图表的配置项和数据
+			        var option = {
+			            title: {
+			                text: '企业男女人数'
+			            },
+			            tooltip: {},
+			            legend: {},
+			            xAxis: {
+			                data: sexChar
+			            },
+			            yAxis: {},
+			            series: [{
+			                name: '人数',
+			                type: 'bar',
+			                data: JSON.parse(result.count)
+			            }]
+			        };
+			        
+			        ctx1.setOption(option);
 					  
 				  }else{
 	                  layer.alert('服务器加载有问题，请联系管理员！');
