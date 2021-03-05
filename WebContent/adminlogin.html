@@ -9,6 +9,7 @@
 	<link rel="stylesheet" href="/static/layui/css/layui.css" media="all">
 	<link rel="stylesheet" href="/static/layui/admin/admin.css" media="all">
 	<link rel="stylesheet" href="/static/layui/admin/login.css" media="all">
+	<link rel="icon" href="/ico/favicon.ico" type="image/x-icon" />
 </head>
 <body>
 
@@ -80,6 +81,7 @@
 					console.log(result);
 					
 					if(result.code === 200){
+						window.sessionStorage.setItem("info", result.info);
 						// 成功登录
 						window.location.href = "/admin/index.html";
 					} else {

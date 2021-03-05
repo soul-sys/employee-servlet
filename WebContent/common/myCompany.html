@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>公司信息管理</title>
+	<link rel="icon" href="/ico/favicon.ico" type="image/x-icon" />
+	<link rel="stylesheet" href="/static/layui/css/layui.css" media="all">
+</head>
+<body>
+<div style="padding: 20px">
+    <span class="layui-breadcrumb">
+		<a>首页</a>
+		<a><cite>公司信息管理</cite></a>
+	</span>
+</div>
+<div style="padding-top: 20px;">
+	
+	<div style="padding: 10px;">
+		<div class="layui-card">
+	        <div class="layui-card-header">
+	        	<span id="companyName"></span>
+	        </div>
+	        <div class="layui-card-body">
+	        	<span id="introduce"></span>
+	        </div>
+	        <input type="hidden" value="" id="companyId" />
+		</div>
+	</div>
+	
+	<div class="layui-form">
+		<button class="layui-btn layuiadmin-btn-list" data-type="batchdel" onclick="add()">添加新的部门</button>
+	</div>
+	
+    <div style="width: 99%; padding: 5px;">
+        <table id="orgTable" ></table>
+    </div>
+</div>
+
+<script src="/static/js/jquery-1.11.2.min.js"></script>
+<script src="/static/layui/layui.js"></script>
+<script type="text/javascript">
+	
+	layui.use(['element','form','table'], function(){
+		var form=layui.form;
+        var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+        $ = layui.jquery; // 使用jquery
+        table = layui.table;
+        
+        var info = sessionStorage.getItem("info");
+        
+        table.render({
+            elem: '#orgTable'
+            ,url:'/org?type=list&employ=' + JSON.parse(info).phoneNum
+            ,cols: [[
+                {type:'checkbox'}
+                ,{field:'id', title: '主键id' ,align:'center'}
+                ,{field:'orgName', title: '部门名称' ,align:'center'}
+                ,{title: '操作', align:'center', templet:formatAction}
+            ]]
+            ,page: true
+        });
+	})
+	
+	// 加载公司信息
+	$(function(){
+		var info = sessionStorage.getItem("info");
+		
+		$.get("/company?type=detail&employ=" + JSON.parse(info).phoneNum, {}, function(result) {
+			if(result.code === 200) {
+				result = JSON.parse(result.data);
+				$("#companyName").html('公司名称：' + result.companyName);
+				$("#introduce").html('公司简介：' + result.introduce);
+				$("#companyId").val(result.id);
+			}
+		});
+    });
+	
+	function formatAction(d) {
+		var button = "<button class='layui-btn layui-btn-warm layui-btn-xs' onclick='deleteOne("+d.id+")'><i class='layui-icon layui-icon-delete' ></i>删除</button>";
+		return button;
+	}
+	
+	function deleteOne(id) {
+		layer.confirm('您确定要删除这条记录吗？删除后企业下员工也会被删除!',{
+            title:"系统提示",
+            btn:['确定','取消']
+        },function () {
+            layer.closeAll("dialog");
+            
+            var info = sessionStorage.getItem("info");
+            
+            $.get("/org?type=delete&org=" + id, function (result) {
+                if(result.code === 200){
+                    layer.msg("删除成功！");
+                    table.reload("orgTable",{url: '/org?type=list&employ=' + JSON.parse(info).phoneNum});
+                }else{
+                    layer.msg(result.msg);
+                }
+            },"json");
+        },function () {
+
+        });
+	}
+	
+	function add() {
+		var id = $("#companyId").val();
+		layer.open({
+			type: 2,
+			title: '添加公司部门',
+			area: ['600px', '300px'],
+			content: '/common/addOrg.html?id=' + id
+		});
+	}
+	
+</script>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>添加公司</title>
+	<link rel="icon" href="/ico/favicon.ico" type="image/x-icon" />
+	<link rel="stylesheet" href="/static/layui/css/layui.css" media="all">
+</head>
+<body>
+<div style="padding: 20px">
+    <span class="layui-breadcrumb">
+		<a>首页</a>
+		<a><cite>添加公司</cite></a>
+	</span>
+</div>
+<div style="padding: 20px">
+    <form class="layui-form" action=""  method="post">
+        <div class="layui-form-item">
+            <label class="layui-form-label">公司名称</label>
+            <div class="layui-input-block">
+                <input type="text" id="companyName" name="companyName" placeholder="请输入公司名称"  autocomplete="off" autocomplete="off"  class="layui-input"/>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+			<label class="layui-form-label">公司简介：</label>
+			<div class="layui-input-block">
+				<textarea placeholder="请输入简介(300字)" class="layui-textarea" name="introduce" id="introduce"></textarea>
+			</div>
+		</div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" onclick="submitData();return false;">提交</button>
+            </div>
+        </div>
+	</form>
+</div>
+
+<script src="/static/js/jquery-1.11.2.min.js"></script>
+<script src="/static/layui/layui.js"></script>
+<script type="text/javascript">
+	
+	layui.use(['element','form'], function(){
+		var form=layui.form;
+	    var element = layui.element;
+	});
+	
+	function submitData(){
+		var companyName = $("#companyName").val().trim();
+        var introduce = $("#introduce").val().trim();
+        
+        if(companyName == "") {
+        	layer.alert("请输入公司名称");
+            return false;
+        }
+        if(introduce == "") {
+        	layer.alert("请输入简介");
+            return false;
+        }
+        if(introduce.length > 300) {
+        	layer.alert("简介不能超过300个字哦~");
+            return false;
+        }
+        
+        $.post("/company?type=add",{companyName:companyName, introduce:introduce},function(result){
+            if(result.code === 200){
+                layer.alert('添加成功！',function () {
+                    window.parent.openPage('companyManage.html');
+                });
+            }else{
+                layer.alert(result.msg);
+            }
+        },"json");
+	}
+	
+</script>
+</body>
+</html>

@@ -31,4 +31,32 @@
 		<servlet-name>CompanyServlet</servlet-name>
 		<url-pattern>/company</url-pattern>
 	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>OrgServlet</servlet-name>
+		<servlet-class>com.lemon1234.servlet.OrgServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>OrgServlet</servlet-name>
+		<url-pattern>/org</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>EmployServlet</servlet-name>
+		<servlet-class>com.lemon1234.servlet.EmployServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>EmployServlet</servlet-name>
+		<url-pattern>/employ</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>UploadServlet</servlet-name>
+		<servlet-class>com.lemon1234.servlet.UploadServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>UploadServlet</servlet-name>
+		<url-pattern>/upload</url-pattern>
+	</servlet-mapping>
+	
 </web-app>

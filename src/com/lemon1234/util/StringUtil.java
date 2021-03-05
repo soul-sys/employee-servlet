@@ -31,8 +31,14 @@ public class StringUtil {
 		}
 	}
 	
-	public static String getFileName() throws Exception {
+	/**
+	 * 获取一个已日期为名称的文件名
+	 * @return
+	 * @throws Exception
+	 */
+	public static String getFileName(){
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmss");
 		return sdf.format(new Date());
 	}
+	
 }

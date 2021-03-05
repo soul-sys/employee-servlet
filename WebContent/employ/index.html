@@ -37,12 +37,10 @@
 						<a href="javascript:openPage('index')">首页</a>
 					</li>
 					<li class="layui-nav-item">
-						<a href="javascript:;">企业管理</a>
-						<dl class="layui-nav-child">
-							<dd>
-								<a href="javascript:openPage('companyManage.html')">企业管理</a>
-							</dd>
-						</dl>
+						<a href="javascript:openPage('myCompany.html')">我的企业</a>
+					</li>
+					<li class="layui-nav-item">
+						<a href="javascript:openPage('employ.html')">员工管理表</a>
 					</li>
 				</ul>
 			</div>
@@ -50,7 +48,7 @@
 
 		<div class="layui-body">
 			<!-- 内容主体区域 -->
-			<iframe id="pageFrame" frameborder='0' scrolling='auto' style='width:100%; height:98%' src="/admin/hello.html"></iframe>
+			<iframe id="pageFrame" frameborder='0' scrolling='auto' style='width:100%; height:98%' src="/employ/hello.html"></iframe>
 		</div>
 
 		<div class="layui-footer">
@@ -69,10 +67,10 @@
 		})
 		
 		function openPage(page){
-			if(page === 'index') {
-				$("#pageFrame").attr("src","/admin/hello.html");
+	        if(page === 'index') {
+				$("#pageFrame").attr("src","/employ/hello.html");
 			} else {
-				$("#pageFrame").attr("src","/common/" + page);
+				$("#pageFrame").attr("src","/common/"+page);
 			}
 	    }
 		

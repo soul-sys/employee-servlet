@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.lemon1234.entity.Employ;
 import com.lemon1234.service.EmployService;
@@ -45,13 +46,15 @@ public class EmployLoginServlet extends HttpServlet {
 					jsonObject.addProperty("code", 500);
 				} else {
 					jsonObject.addProperty("code", 200);
+					// 需要置空密码
+					employ.setPassword("");
+					jsonObject.addProperty("info", new Gson().toJson(employ));
 				}
 			} else {
 				jsonObject.addProperty("msg", "查无此人");
 				jsonObject.addProperty("code", 500);
 			}
 			
-			request.getSession().setAttribute(employ.getPhoneNum(), employ);
 			PrintUtil.write(jsonObject.toString(), response);
 		} catch (Exception e) {
 			e.printStackTrace();

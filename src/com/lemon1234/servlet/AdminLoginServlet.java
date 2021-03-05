@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.lemon1234.entity.Admin;
 import com.lemon1234.service.AdminService;
@@ -44,13 +45,16 @@ public class AdminLoginServlet extends HttpServlet {
 				} else {
 					// 返回 ok
 					jsonObject.addProperty("code", 200);
+					// 需要置空密码
+					admin.setPassword("");
+					jsonObject.addProperty("info", new Gson().toJson(admin));
 				}
 			} else {
 				// 查无此人
 				jsonObject.addProperty("msg", "查无此人");
 				jsonObject.addProperty("code", 500);
 			}
-			request.getSession().setAttribute(admin.getUsername(), admin);
+
 			PrintUtil.write(jsonObject.toString(), response);
 			
 		} catch (Exception e) {

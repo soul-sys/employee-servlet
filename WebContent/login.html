@@ -9,6 +9,7 @@
 	<link rel="stylesheet" href="/static/layui/css/layui.css" media="all">
 	<link rel="stylesheet" href="/static/layui/admin/admin.css" media="all">
 	<link rel="stylesheet" href="/static/layui/admin/login.css" media="all">
+	<link rel="icon" href="/ico/favicon.ico" type="image/x-icon" />
 </head>
 <body>
 
@@ -47,7 +48,7 @@
 
 		<div class="layui-trans layadmin-user-login-footer">
 			<p>
-				© 2021 <a href="https://www.lemon1234.com" target="_blank">lemon1234.com</a>
+				© 2020-2021 <a href="https://www.lemon1234.com" target="_blank">lemon1234.com</a>
 			</p>
 			<p>
 				<span>
@@ -80,6 +81,7 @@
 					console.log(result);
 					
 					if(result.code === 200){
+						window.sessionStorage.setItem("info", result.info);
 						// 成功登录
 						window.location.href = "/employ/index.html";
 					} else {

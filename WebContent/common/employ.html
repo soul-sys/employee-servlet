@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="UTF-8">
-	<title>公司信息管理</title>
+	<title>员工信息管理</title>
 	<link rel="icon" href="/ico/favicon.ico" type="image/x-icon" />
 	<link rel="stylesheet" href="/static/layui/css/layui.css" media="all">
 </head>
@@ -10,7 +10,7 @@
 <div style="padding: 20px">
     <span class="layui-breadcrumb">
 		<a>首页</a>
-		<a><cite>公司信息管理</cite></a>
+		<a><cite>员工信息管理</cite></a>
 	</span>
 </div>
 <div style="padding-top: 20px;">
@@ -18,9 +18,9 @@
         <div class="layui-form">
 
             <div class="layui-inline">
-                <label class="layui-form-label" style="width: 140px;">公司名称</label>
+                <label class="layui-form-label" style="width: 140px;">员工姓名</label>
                 <div class="layui-input-inline">
-                    <input type="text" id="s_name"  placeholder="请输入公司名称" autocomplete="off" style="width: 400px" class="layui-input" onkeydown="if(event.keyCode==13) search()"/>
+                    <input type="text" id="s_name"  placeholder="请输入员工姓名" autocomplete="off" style="width: 400px" class="layui-input" onkeydown="if(event.keyCode==13) search()"/>
                 </div>
             </div>
 
@@ -28,12 +28,12 @@
                 <button class="layui-btn layuiadmin-btn-list"  lay-submit="" onclick="search()" lay-filter="LAY-app-contlist-search" style="margin: 15px;">
                     <i class="layui-icon layui-icon-search layuiadmin-button-btn" ></i>
                 </button>
-                <button class="layui-btn layuiadmin-btn-list" data-type="batchdel" onclick="add()">添加新的公司</button>
+                <button class="layui-btn layuiadmin-btn-list" data-type="batchdel" onclick="add()">添加新的员工</button>
             </div>
         </div>
     </div>
     <div style="width: 99%; padding: 5px;">
-        <table id="companyTable" ></table>
+        <table id="employTable" ></table>
     </div>
 </div>
 
@@ -47,31 +47,50 @@
         $ = layui.jquery; // 使用jquery
         table = layui.table;
         
+        var info = sessionStorage.getItem("info");
+        
         table.render({
-            elem: '#companyTable'
-            ,url:'/company?type=list'
+            elem: '#employTable'
+            ,url:'/employ?type=list&employ=' + JSON.parse(info).phoneNum
             ,cols: [[
                 {type:'checkbox'}
                 ,{field:'id', width:80, title: '主键id' ,align:'center'}
-                ,{field:'companyName', width:200, title: '公司名称' ,align:'center'}
-                ,{field:'introduce', title: '公司介绍'}
-                ,{field:'createDt', width:220, title: '创建日期', align:'center'}
-                ,{field:'count', width:200, title: '公司员工数量' ,align:'center'}
+                ,{field:'name', title: '员工姓名' ,align:'center'}
+                ,{field:'age', title: '年龄'}
+                ,{field:'phoneNum', title: '电话号', align:'center'}
+                ,{field:'email', title: '邮箱' ,align:'center'}
+                ,{field:'sex', title: '性别' ,align:'center', templet:formatSex}
+                ,{field:'orgName', title: '部门' ,align:'center'}
                 ,{title: '操作', align:'center', templet:formatAction, width:200}
             ]]
             ,page: true
         });
 	})
 	
+	function formatSex(d) {
+		if(d.sex === 1) {
+			return '男';
+		}
+		if(d.sex === 2) {
+			return '女';
+		} else {
+			return '未知';
+		}
+	}
+	
 	function search(){
-        var s_name=$("#s_name").val();
-        table.reload("companyTable",{
-            page:{
+        var s_name = $("#s_name").val();
+        
+        var info = sessionStorage.getItem("info");
+        
+        table.reload("employTable",{
+            page: {
                 curr:1
             }
-            ,where:{
+            ,where: {
                 name:s_name
             }
+            ,url: '/employ?type=list&employ=' + JSON.parse(info).phoneNum
         })
     }
 	
@@ -81,15 +100,15 @@
 	}
 	
 	function deleteOne(id) {
-		layer.confirm('您确定要删除这条记录吗？删除后企业下员工也会被删除!',{
+		layer.confirm('您确定要删除这条记录吗？',{
             title:"系统提示",
             btn:['确定','取消']
         },function () {
             layer.closeAll("dialog");
-            $.get("/company?type=delete&id=" + id, function (result) {
+            $.get("/employ?type=delete&id=" + id, function (result) {
                 if(result.code === 200){
                     layer.msg("删除成功！");
-                    table.reload("companyTable",{});
+                    table.reload("employTable",{});
                 }else{
                     layer.msg(result.msg);
                 }
@@ -100,7 +119,7 @@
 	}
 	
 	function add() {
-		window.parent.openPage('addCompany.html');
+		window.parent.openPage('addEmploy.html');
 	}
 	
 </script>
